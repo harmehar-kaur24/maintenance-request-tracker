@@ -5,8 +5,17 @@ from .models import Request
 
 
 def list_request(request):
-    return render(request, 'request_list.html', {'requests': Request.objects.all()})
-
+    requests = Request.objects.all()
+    filterLevels = []
+    if request.GET.get('level1Urgent'):
+        filterLevels.append(1)
+    if request.GET.get('level2Urgent'):
+        filterLevels.append(2)
+    if request.GET.get('level3Urgent'):
+        filterLevels.append(3)
+    if filterLevels:
+        requests = requests.filter(urgency__in=filterLevels)
+    return render(request, 'request_list.html', {'requests': requests})
 
 def view_request(request, pk):
     service_request = get_object_or_404(Request, pk=pk)
@@ -37,3 +46,5 @@ def delete_request(request, pk):
         return redirect('list_request')
     return render(request, 'request_confirm_delete.html', {'service_request': service_request})
 
+def filter_request(request):
+    return render(request, 'filter.html', {})

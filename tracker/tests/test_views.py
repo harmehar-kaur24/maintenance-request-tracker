@@ -18,6 +18,15 @@ class ListRequestTests(TestCase):
         response = self.client.get(reverse('list_request'))
         self.assertContains(response, 'No requests yet.')
 
+    def test_filters_by_multiple_urgency_levels(self):
+        Request.objects.create(title='level1Urgent', urgency=1)
+        Request.objects.create(title='level2Urgent', urgency=2)
+        Request.objects.create(title='level3Urgent', urgency=3)
+        response = self.client.get(reverse('list_request'),{'level1Urgent': 'on', 'level3Urgent': 'on',})
+        self.assertContains(response, 'level1Urgent')
+        self.assertContains(response, 'level3Urgent')
+        self.assertNotContains(response, 'level2Urgent')
+
 
 class ViewRequestTests(TestCase):
     def test_shows_request(self):
