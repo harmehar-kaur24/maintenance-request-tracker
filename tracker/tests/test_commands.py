@@ -63,7 +63,7 @@ class SeedCommandTests(TestCase):
     def test_seeded_requests_are_valid(self):
         run_command('seed', '--count', '50')
         for service_request in Request.objects.all():
-            form = RequestForm(data={'title': service_request.title, 'description': service_request.description})
+            form = RequestForm(data={'title': service_request.title, 'description': service_request.description, 'urgency': service_request.urgency})
             self.assertTrue(form.is_valid(), form.errors)
             self.assertNotEqual(service_request.description, '')
 
