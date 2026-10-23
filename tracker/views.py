@@ -6,6 +6,12 @@ from .models import Request
 
 def list_request(request):
     requests = Request.objects.all()
+
+    search_query = request.GET.get('searchInput')
+    if search_query:
+        # searches for requests containing search input in title AND description 
+        requests = Request.objects.filter(title__icontains=search_query) | Request.objects.filter(description__icontains=search_query)
+
     filterLevels = []
     if request.GET.get('level1Urgent'):
         filterLevels.append(1)
