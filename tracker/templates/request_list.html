@@ -22,6 +22,7 @@
       <th>Title</th>
       <th>Urgency</th>
       <th>Description</th>
+      <th>Date Created</th>
       <th></th>
     </tr>
   </thead>
@@ -36,6 +37,7 @@
           {% else %}<span class="badge text-bg-success">Not urgent</span>{% endif %}
         </td>
         <td>{{ request.description|truncatechars:80 }}</td>
+        <td>{{ request.created_at|date:"d / m / Y H:i"}}</td>
         <td>
           <a href="{% url 'view_request' request.pk %}" title="Show"><i class="bi bi-eye"></i></a>
           <a href="{% url 'update_request' request.pk %}" title="Edit"><i class="bi bi-pencil"></i></a>
