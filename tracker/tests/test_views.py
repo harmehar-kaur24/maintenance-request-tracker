@@ -18,6 +18,15 @@ class ListRequestTests(TestCase):
         response = self.client.get(reverse('list_request'))
         self.assertContains(response, 'No requests yet.')
 
+    def test_filters_by_multiple_urgency_levels(self):
+        Request.objects.create(title='level1Urgent', urgency=1)
+        Request.objects.create(title='level2Urgent', urgency=2)
+        Request.objects.create(title='level3Urgent', urgency=3)
+        response = self.client.get(reverse('list_request'),{'level1Urgent': 'on', 'level3Urgent': 'on',})
+        self.assertContains(response, 'level1Urgent')
+        self.assertContains(response, 'level3Urgent')
+        self.assertNotContains(response, 'level2Urgent')
+
 
 class ViewRequestTests(TestCase):
     def test_shows_request(self):
@@ -41,7 +50,7 @@ class CreateRequestTests(TestCase):
         self.assertContains(response, 'New request')
 
     def test_valid_post_creates_request_and_redirects(self):
-        response = self.client.post(reverse('create_request'), {'title': 'Leaking tap', 'description': 'Kitchen sink'})
+        response = self.client.post(reverse('create_request'), {'title': 'Leaking tap', 'description': 'Kitchen sink', 'urgency': 1})
         service_request = Request.objects.get()
         self.assertEqual(service_request.title, 'Leaking tap')
         self.assertRedirects(response, reverse('view_request', args=[service_request.pk]))
@@ -66,7 +75,7 @@ class UpdateRequestTests(TestCase):
         self.assertContains(response, 'value="Leaking tap"')
 
     def test_valid_post_updates_request_and_redirects(self):
-        response = self.client.post(self.url, {'title': 'Dripping tap', 'description': 'Bathroom'})
+        response = self.client.post(self.url, {'title': 'Dripping tap', 'description': 'Bathroom', 'urgency': 1})
         self.service_request.refresh_from_db()
         self.assertEqual(self.service_request.title, 'Dripping tap')
         self.assertEqual(self.service_request.description, 'Bathroom')

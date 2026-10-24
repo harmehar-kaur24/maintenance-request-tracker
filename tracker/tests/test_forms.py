@@ -5,11 +5,11 @@ from tracker.forms import RequestForm
 
 class RequestFormTests(TestCase):
     def test_valid_with_title_and_description(self):
-        form = RequestForm(data={'title': 'Leaking tap', 'description': 'Kitchen sink'})
+        form = RequestForm(data={'title': 'Leaking tap', 'description': 'Kitchen sink', 'urgency': 1})
         self.assertTrue(form.is_valid())
 
     def test_valid_without_description(self):
-        form = RequestForm(data={'title': 'Leaking tap', 'description': ''})
+        form = RequestForm(data={'title': 'Leaking tap', 'description': '', 'urgency': 1})
         self.assertTrue(form.is_valid())
 
     def test_title_is_required(self):
@@ -23,7 +23,7 @@ class RequestFormTests(TestCase):
         self.assertIn('title', form.errors)
 
     def test_save_creates_request(self):
-        form = RequestForm(data={'title': 'Leaking tap', 'description': 'Kitchen sink'})
+        form = RequestForm(data={'title': 'Leaking tap', 'description': 'Kitchen sink', 'urgency': 1})
         service_request = form.save()
         self.assertEqual(service_request.title, 'Leaking tap')
         self.assertIsNotNone(service_request.pk)
@@ -32,3 +32,4 @@ class RequestFormTests(TestCase):
         form = RequestForm()
         self.assertIn('class="form-control"', str(form['title']))
         self.assertIn('class="form-control"', str(form['description']))
+        self.assertIn('class="form-select"', str(form['urgency']))

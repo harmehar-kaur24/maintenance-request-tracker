@@ -3,11 +3,24 @@
 {% block heading %}Requests{% endblock %}
 
 {% block content %}
+<div>
+  <form method="get" action="{% url 'list_request' %}">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input class="form-control" type="text" id="searchBar" name="searchInput" placeholder="Search requests...">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </div>
+  </form>
+  <a class="btn btn-primary float-end mb-2" href="{% url 'filter_request' %}">Filter</a>
+</div>
+
 <table class="table table-hover">
   <thead>
     <tr>
       <th>#</th>
       <th>Title</th>
+      <th>Urgency</th>
       <th>Description</th>
       <th>Date Created</th>
       <th></th>
@@ -18,6 +31,11 @@
       <tr>
         <td>{{ request.pk }}</td>
         <td><a href="{% url 'view_request' request.pk %}">{{ request.title }}</a></td>
+        <td>
+          {% if request.urgency == 1 %}<span class="badge text-bg-danger">Very urgent</span>
+          {% elif request.urgency == 2 %}<span class="badge text-bg-warning">Mildly urgent</span>
+          {% else %}<span class="badge text-bg-success">Not urgent</span>{% endif %}
+        </td>
         <td>{{ request.description|truncatechars:80 }}</td>
         <td>{{ request.created_at|date:"d / m / Y H:i"}}</td>
         <td>
@@ -27,7 +45,7 @@
         </td>
       </tr>
     {% empty %}
-      <tr><td colspan="4">No requests yet.</td></tr>
+      <tr><td colspan="5">No requests yet.</td></tr>
     {% endfor %}
   </tbody>
 </table>

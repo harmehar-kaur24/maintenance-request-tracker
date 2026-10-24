@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block heading %}
+    Filter Requests
+{% endblock %}
+
+{% block content %}
+
+<form method="get" action="{% url 'list_request' %}">
+
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input"
+               type="checkbox"
+               role="switch"
+               id="level1Urgent"
+               name="level1Urgent">
+        <label class="form-check-label" for="level1Urgent">Very Urgent</label>
+    </div>
+
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input"
+               type="checkbox"
+               role="switch"
+               id="level2Urgent"
+               name="level2Urgent">
+        <label class="form-check-label" for="level2Urgent">Mildly urgent</label>
+    </div>
+
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input"
+               type="checkbox"
+               role="switch"
+               id="level3Urgent"
+               name="level3Urgent">
+        <label class="form-check-label" for="level3Urgent">Not urgent</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Apply filters</button>
+
+</form>
+
+{% endblock %}
