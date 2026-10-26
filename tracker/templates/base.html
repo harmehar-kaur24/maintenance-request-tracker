@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en", data-bs-theme="{{ request.session.theme|default:'light' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,7 @@
     <div class="container">
       <a class="navbar-brand" href="{% url 'list_request' %}">Maintenance request tracker</a>
       <a class="btn btn-outline-light" href="{% url 'create_request' %}">New request</a>
+      <a class="btn btn-outline-light" href="{% url 'settings' %}">Settings</a>
     </div>
   </nav>
 

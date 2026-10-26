@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block heading %}Settings{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'settings' %}">
+  {% csrf_token %}
+  
+  <button type="submit" name="theme" value="light", class="btn btn-primary">Light</button>
+  <button type="submit" name="theme" value="dark", class="btn btn-primary">Dark</button>
+
+  </form>
+
+{% endblock %}
+
