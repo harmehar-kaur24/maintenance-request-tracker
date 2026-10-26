@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import RequestForm
 from .models import Request
 
+VALID_THEMES = {'light', 'dark'}
+
 
 def list_request(request):
     requests = Request.objects.all()
@@ -54,3 +56,14 @@ def delete_request(request, pk):
 
 def filter_request(request):
     return render(request, 'filter.html', {})
+
+#may alter this logic later on, as it assumes that any POST from settings
+#will imply that the user has toggled dark mode, even if this is not the case.
+def settings_render(request):
+    if request.method == 'POST':
+        theme = request.POST.get('theme')
+        if theme in VALID_THEMES:
+            request.session['theme'] = theme
+        return redirect('settings')
+
+    return render(request, 'settings.html', {})

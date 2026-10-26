@@ -9,4 +9,5 @@ urlpatterns = [
     path('requests/<int:pk>/edit/', views.update_request, name='update_request'),
     path('requests/<int:pk>/delete/', views.delete_request, name='delete_request'),
     path('requests/filter/', views.filter_request, name='filter_request'),
+    path('settings/', views.settings_render, name='settings'),
 ]
